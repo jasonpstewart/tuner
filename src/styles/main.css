@@ -1,3 +1,4 @@
+/* === Reset === */
 *,
 *::before,
 *::after {
@@ -14,20 +15,130 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* === Base / Mobile (320px+) === */
 body {
   min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #0a0a0a;
-  color: #f5f5f5;
+  background: #0f172a;
+  color: #e2e8f0;
 }
 
 #app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
   width: 100%;
-  max-width: 480px;
-  padding: 1rem;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* --- Header --- */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.1);
+}
+
+.app-header h1 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #e2e8f0;
+}
+
+/* --- Main content --- */
+.tuner-main {
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.gauge-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 320px;
+}
+
+.note-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+}
+
+/* --- Footer / Controls --- */
+.tuner-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  min-height: 120px;
+  border-top: 1px solid rgba(226, 232, 240, 0.1);
+  background: #0f172a;
+}
+
+.string-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+/* Touch target: all interactive elements at least 44px */
+.string-selector button,
+.action-buttons button {
+  min-width: 44px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+/* === Tablet (768px+) === */
+@media (min-width: 768px) {
+  #app {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .gauge-container {
+    max-width: 400px;
+  }
+}
+
+/* === Desktop (1024px+) === */
+@media (min-width: 1024px) {
+  #app {
+    max-width: 800px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .app-header {
+    padding: 1rem 2rem;
+  }
+
+  .tuner-main {
+    padding: 2rem;
+  }
+
+  .tuner-controls {
+    padding: 1.5rem 2rem;
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  }
 }
