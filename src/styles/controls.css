@@ -1,0 +1,200 @@
+/* === Controls: Instrument/Tuning pickers, String buttons === */
+
+/* --- Pickers row --- */
+.pickers {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.25rem;
+}
+
+.picker-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: #1e293b;
+  color: #e2e8f0;
+  border: 1px solid rgba(226, 232, 240, 0.15);
+  border-radius: 8px;
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-family: inherit;
+  min-height: 44px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23a3a3a3' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  max-width: 200px;
+  flex: 1 1 140px;
+  transition: border-color 0.15s ease-out;
+}
+
+.picker-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+}
+
+/* --- String buttons row --- */
+.string-buttons {
+  display: flex;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.string-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.375rem 0.625rem;
+  border: 2px solid rgba(226, 232, 240, 0.15);
+  border-radius: 10px;
+  background: #1e293b;
+  color: #e2e8f0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease-out, border-color 0.15s ease-out,
+    color 0.15s ease-out, box-shadow 0.15s ease-out;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.string-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.string-btn:hover {
+  background: #283548;
+  border-color: rgba(226, 232, 240, 0.25);
+}
+
+.string-btn:active {
+  background: #334155;
+}
+
+/* Active string: blue accent (colorblind-safe) */
+.string-btn.active {
+  background: #1d4ed8;
+  border-color: #3b82f6;
+  color: #fff;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.35);
+}
+
+/* --- Play tone button (inline with string) --- */
+.play-tone-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0;
+  margin-left: 2px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #a3a3a3;
+  cursor: pointer;
+  transition: color 0.15s ease-out, background 0.15s ease-out;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.play-tone-btn:hover {
+  color: #e2e8f0;
+  background: rgba(226, 232, 240, 0.08);
+}
+
+.play-tone-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.play-tone-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+/* --- String button group (button + play icon) --- */
+.string-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+
+/* --- Chromatic toggle --- */
+.chromatic-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.375rem 0.75rem;
+  border: 2px solid rgba(226, 232, 240, 0.15);
+  border-radius: 10px;
+  background: #1e293b;
+  color: #a3a3a3;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease-out, border-color 0.15s ease-out,
+    color 0.15s ease-out;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+.chromatic-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.chromatic-toggle:hover {
+  background: #283548;
+}
+
+/* Chromatic active: orange accent (colorblind-safe pair with blue) */
+.chromatic-toggle.active {
+  background: #c2410c;
+  border-color: #ea580c;
+  color: #fff;
+}
+
+/* --- Responsive: tighter on very narrow screens --- */
+@media (max-width: 374px) {
+  .string-btn {
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8125rem;
+  }
+
+  .picker-select {
+    font-size: 0.8125rem;
+    padding: 0.375rem 1.75rem 0.375rem 0.5rem;
+  }
+}
+
+/* Wide screens: single row, more spacing */
+@media (min-width: 768px) {
+  .string-buttons {
+    gap: 0.5rem;
+  }
+
+  .string-btn {
+    min-width: 52px;
+    padding: 0.5rem 0.75rem;
+  }
+}
