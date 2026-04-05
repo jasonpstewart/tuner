@@ -59,3 +59,19 @@ Tests cover `src/utils/music.js` and `src/audio/note-detector.js`. Audio modules
 ## Team
 
 Defined in `.claude/team.yaml`. Four roles: audio, frontend, data, infra. Learnings in `memory/agents/*/learnings.md`.
+
+## Task Tracking
+
+This project uses **tacks** (the `tk` CLI) as its canonical task tracker. Database lives at `.tacks/tacks.db` (committed to the repo so the backlog travels with the code).
+
+- `tk list` — open tasks
+- `tk ready` — tasks with no open blockers
+- `tk stats` / `tk prime` — backlog overview + AI context summary
+- `tk create "title" -p <0-3> -t tag1,tag2 -d "description"` — new task (priority: 0=critical, 1=high, 2=medium, 3=low)
+- `tk show <id>` / `tk update <id> ...` / `tk close <id>` — task lifecycle
+- `tk dep add <blocker> <blocked>` — dependencies
+- `tk comment <id> "note"` — append-only activity log
+
+Slash skills prefixed `/tacks:` wrap the same commands. When capturing retro action items, open bugs, or surfacing deferred work, create tacks tasks — do NOT use `TODO.md` (legacy, being retired) or inline comments in code.
+
+The older `memory/epics/tuner-001/epic.md` and `TODO.md` files are historical artifacts from the initial `/blossom`-driven bootstrap and should not be extended. They will be consolidated into tacks (tracked as `tk-a723`).
