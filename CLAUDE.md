@@ -74,6 +74,4 @@ This project uses **tacks** (the `tk` CLI) as its canonical task tracker. Databa
 - `tk dep add <blocker> <blocked>` — dependencies
 - `tk comment <id> "note"` — append-only activity log
 
-Slash skills prefixed `/tacks:` wrap the same commands. When capturing retro action items, open bugs, or surfacing deferred work, create tacks tasks — do NOT use `TODO.md` (legacy, being retired) or inline comments in code.
-
-The older `memory/epics/tuner-001/epic.md` and `TODO.md` files are historical artifacts from the initial `/blossom`-driven bootstrap and should not be extended. They will be consolidated into tacks (tracked as `tk-a723`).
+Slash skills prefixed `/tacks:` wrap the same commands. When capturing retro action items, open bugs, or surfacing deferred work, create tacks tasks — do NOT use inline TODO comments in code.
