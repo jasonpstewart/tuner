@@ -3,6 +3,13 @@
  *
  * Each call to playTone() creates a fresh OscillatorNode + GainNode pair
  * because OscillatorNode is one-shot (cannot restart after stop()).
+ *
+ * Waveform is a 5-harmonic additive stack (organ/flute-like) rather than a
+ * pure sine: puts energy in the 2-4kHz band where human hearing is most
+ * sensitive, and provides overtones at 2f/3f that beat audibly against the
+ * instrument's own harmonics — which is how the ear actually resolves pitch
+ * error when tuning. A DynamicsCompressorNode on the output smooths transients
+ * so master volume can sit higher without clipping.
  */
 
 import { getAudioContext, initAudio } from './audio-context.js';
@@ -17,7 +24,79 @@ let currentGain = null;
 let stopTimeoutId = null;
 
 /** Master volume level (0-1) */
-let masterVolume = 0.3;
+let masterVolume = 0.55;
+
+/**
+ * Two harmonic presets, selected by fundamental frequency:
+ *
+ * - "low"  (fundamental < 250 Hz): rich upper partials so beat energy lands
+ *   in the 400 Hz-1 kHz band where the ear is most sensitive. Without this,
+ *   a low-E bass at 41 Hz produces beats only at 41 Hz - below peak ear
+ *   sensitivity and often below a laptop speaker's low-frequency rolloff.
+ * - "high" (fundamental >= 250 Hz): lighter partial stack. The fundamental
+ *   is already near the ear's sensitivity peak, so extra upper partials
+ *   add critical-band crowding without improving beat audibility.
+ *
+ * Both capped at 5 partials to limit false beats from inharmonicity mismatch
+ * (our PeriodicWave is mathematically pure; real instruments have slightly
+ * stretched partials, and the mismatch compounds at higher harmonics).
+ */
+const LOW_HARMONIC_THRESHOLD = 250;
+const LOW_HARMONIC_AMPLITUDES = [0, 1.0, 0.6, 0.4, 0.28, 0.2];
+const HIGH_HARMONIC_AMPLITUDES = [0, 1.0, 0.5, 0.25, 0.1, 0.04];
+
+/** @type {PeriodicWave | null} */
+let lowHarmonicWave = null;
+
+/** @type {PeriodicWave | null} */
+let highHarmonicWave = null;
+
+/** @type {DynamicsCompressorNode | null} */
+let outputCompressor = null;
+
+/**
+ * Builds (and caches) the additive harmonic waveform for the given frequency.
+ * PeriodicWave auto-normalizes the time-domain peak to 1.0.
+ *
+ * @param {AudioContext} ctx
+ * @param {number} frequency - Fundamental frequency in Hz
+ * @returns {PeriodicWave}
+ */
+function getHarmonicWave(ctx, frequency) {
+  if (frequency < LOW_HARMONIC_THRESHOLD) {
+    if (lowHarmonicWave) return lowHarmonicWave;
+    const real = new Float32Array(LOW_HARMONIC_AMPLITUDES.length);
+    const imag = new Float32Array(LOW_HARMONIC_AMPLITUDES);
+    lowHarmonicWave = ctx.createPeriodicWave(real, imag);
+    return lowHarmonicWave;
+  }
+  if (highHarmonicWave) return highHarmonicWave;
+  const real = new Float32Array(HIGH_HARMONIC_AMPLITUDES.length);
+  const imag = new Float32Array(HIGH_HARMONIC_AMPLITUDES);
+  highHarmonicWave = ctx.createPeriodicWave(real, imag);
+  return highHarmonicWave;
+}
+
+/**
+ * Builds (and caches) a persistent compressor connected to the destination.
+ * Per-play gain nodes connect into this instead of directly to destination.
+ *
+ * @param {AudioContext} ctx
+ * @returns {DynamicsCompressorNode}
+ */
+function getOutputChain(ctx) {
+  if (outputCompressor) return outputCompressor;
+  const compressor = ctx.createDynamicsCompressor();
+  const now = ctx.currentTime;
+  compressor.threshold.setValueAtTime(-18, now);
+  compressor.knee.setValueAtTime(6, now);
+  compressor.ratio.setValueAtTime(3, now);
+  compressor.attack.setValueAtTime(0.003, now);
+  compressor.release.setValueAtTime(0.1, now);
+  compressor.connect(ctx.destination);
+  outputCompressor = compressor;
+  return outputCompressor;
+}
 
 /** Whether a tone is currently playing */
 let playing = false;
@@ -43,7 +122,7 @@ export async function playTone(frequency, duration = 3) {
   const oscillator = ctx.createOscillator();
   const gain = ctx.createGain();
 
-  oscillator.type = 'sine';
+  oscillator.setPeriodicWave(getHarmonicWave(ctx, frequency));
   oscillator.frequency.setValueAtTime(frequency, now);
 
   // ADSR envelope
@@ -52,18 +131,23 @@ export async function playTone(frequency, duration = 3) {
   // Attack: ~50ms linear ramp to master volume
   gain.gain.linearRampToValueAtTime(masterVolume, now + 0.05);
   // Decay: ~100ms exponential decay to sustain level
-  const sustainLevel = masterVolume * (2 / 3);
+  const sustainLevel = masterVolume * 0.8;
   gain.gain.exponentialRampToValueAtTime(sustainLevel, now + 0.15);
   // Sustain: holds at sustainLevel (no scheduling needed)
 
-  // Connect: oscillator -> gain -> destination
+  // Connect: oscillator -> gain -> compressor -> destination
   oscillator.connect(gain);
-  gain.connect(ctx.destination);
+  gain.connect(getOutputChain(ctx));
 
   oscillator.start(now);
   currentOscillator = oscillator;
   currentGain = gain;
   playing = true;
+
+  // Notify UI that playback has started
+  document.dispatchEvent(
+    new CustomEvent('tone-start', { detail: { frequency } })
+  );
 
   // Clean up when oscillator ends (natural stop or forced)
   oscillator.onended = () => {
@@ -73,6 +157,9 @@ export async function playTone(frequency, duration = 3) {
       currentOscillator = null;
       currentGain = null;
       playing = false;
+      document.dispatchEvent(
+        new CustomEvent('tone-end', { detail: { frequency } })
+      );
     }
   };
 
