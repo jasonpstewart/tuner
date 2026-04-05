@@ -6,6 +6,13 @@ defaults:
   budget: 0.50
   permission-mode: dontAsk
 
+# Model override guidance (from retro 2026-04-04):
+# Use opus for:
+#   - Integration tasks (wiring modules together in main.js)
+#   - Complex UI tasks (SVG animations, CSS transforms, multi-component interaction)
+#   - Tasks requiring reading 3+ existing modules before writing
+# Sonnet is fine for isolated module implementation.
+
 members:
   - name: audio
     role: "Web Audio API: mic capture, pitch detection, tone generation, AudioContext management"
