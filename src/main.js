@@ -128,7 +128,7 @@ document.addEventListener('stop-tone', () => {
 
 if ('serviceWorker' in navigator) {
   if (import.meta.env.PROD) {
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`)
   } else {
     // In dev, ensure any previously-installed SW is removed so reloads aren't served from cache.
     navigator.serviceWorker.getRegistrations().then((regs) => {

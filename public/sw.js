@@ -1,12 +1,17 @@
 const CACHE_NAME = 'tuner-v1';
 
+// Base path derived from the SW's registration scope so the same code works
+// at root (dev) and at a subpath like /tuner/ (GitHub Pages). Bump CACHE_NAME
+// when you change the SW's own logic.
+const BASE = new URL(self.registration.scope).pathname;
+
 // App shell files to precache — update these when build output changes
 const APP_SHELL = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon-192.svg',
-  '/icon-512.svg',
+  BASE,
+  `${BASE}index.html`,
+  `${BASE}manifest.json`,
+  `${BASE}icon-192.svg`,
+  `${BASE}icon-512.svg`,
 ];
 
 // Install: precache app shell
