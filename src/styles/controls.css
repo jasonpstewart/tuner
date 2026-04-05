@@ -46,26 +46,54 @@
   width: 100%;
 }
 
+/*
+ * Merged string button: single tap target that handles both string selection
+ * (as the tuning target) and reference-tone playback. Visual states stack:
+ *   .detected  - amber outline, painted by the pitch detector's closest-string hint
+ *   .selected  - teal fill, set only by user tap
+ *   .playing   - pulsing teal glow on top of .selected, tone currently sounding
+ *   .in-tune   - small teal dot, indicates the detected pitch is within threshold
+ * Tap state machine lives in src/ui/string-selector.js.
+ */
 .string-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 0.375rem 0.625rem;
+  min-width: 52px;
+  min-height: 52px;
+  padding: 0.5rem 0.75rem;
   border: 2px solid rgba(226, 232, 240, 0.15);
   border-radius: 10px;
   background: #1e293b;
   color: #e2e8f0;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
   transition: background 0.15s ease-out, border-color 0.15s ease-out,
-    color 0.15s ease-out, box-shadow 0.15s ease-out;
+    color 0.15s ease-out, box-shadow 0.15s ease-out, transform 0.08s ease-out;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+}
+
+.string-btn-label {
+  pointer-events: none;
+}
+
+/* Binary in-tune dot: absolute-positioned in the top-right corner of the
+   button, only visible when the detected pitch is within the in-tune
+   threshold on the currently-detected string. */
+.string-btn-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background 0.15s ease-out;
+  pointer-events: none;
 }
 
 .string-btn:focus-visible {
@@ -79,106 +107,125 @@
 }
 
 .string-btn:active {
-  background: #334155;
+  transform: scale(0.97);
 }
 
-/* Active string: blue accent (colorblind-safe) */
-.string-btn.active {
-  background: #1d4ed8;
-  border-color: #3b82f6;
+/* Detected: amber outline ring from the pitch detector's auto-lock.
+   This is a hint only — it never changes cents calculation or plays a tone. */
+.string-btn.detected {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.4);
+}
+
+/* Selected: teal fill from a user tap. Selection is sticky and drives the
+   gauge's cents calculation. */
+.string-btn.selected {
+  background: #0f766e;
+  border-color: #14b8a6;
   color: #fff;
-  box-shadow: 0 0 8px rgba(59, 130, 246, 0.35);
 }
 
-/* --- Play tone button (inline with string) --- */
-.play-tone-btn {
+/* Selected + detected: keep the teal fill, layer the amber ring. */
+.string-btn.selected.detected {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.55);
+}
+
+/* Playing: pulsing teal glow — reference tone is currently sounding. */
+.string-btn.playing {
+  animation: string-btn-pulse 1.4s ease-in-out infinite;
+}
+
+/* In-tune binary dot — lights up on the currently-detected string when
+   within the in-tune threshold. */
+.string-btn.in-tune .string-btn-dot {
+  background: #2dd4bf;
+  box-shadow: 0 0 6px rgba(45, 212, 191, 0.7);
+}
+
+@keyframes string-btn-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(45, 212, 191, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .string-btn.playing {
+    animation: none;
+    box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.55);
+  }
+}
+
+/*
+ * "Any Note" button: escape hatch that clears the pinned-string selection
+ * so the gauge reverts to showing whatever note the mic hears. Rendered at
+ * the end of the string-buttons row. Styled distinct from string buttons
+ * (wider, lowercase-ish text, italic accent) so users can tell it's a mode
+ * switch, not another tuning preset. Shares the .selected state visuals.
+ */
+.any-note-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  min-width: 28px;
-  min-height: 28px;
-  padding: 0;
-  margin-left: 2px;
-  border: none;
-  border-radius: 50%;
+  min-height: 52px;
+  padding: 0.5rem 0.875rem;
+  margin-left: 0.25rem;
+  border: 2px dashed rgba(226, 232, 240, 0.25);
+  border-radius: 10px;
   background: transparent;
   color: #a3a3a3;
-  cursor: pointer;
-  transition: color 0.15s ease-out, background 0.15s ease-out;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.play-tone-btn:hover {
-  color: #e2e8f0;
-  background: rgba(226, 232, 240, 0.08);
-}
-
-.play-tone-btn:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-}
-
-.play-tone-btn svg {
-  width: 14px;
-  height: 14px;
-  fill: currentColor;
-}
-
-/* --- String button group (button + play icon) --- */
-.string-group {
-  display: inline-flex;
-  align-items: center;
-  gap: 0;
-}
-
-/* --- Chromatic toggle --- */
-.chromatic-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 0.375rem 0.75rem;
-  border: 2px solid rgba(226, 232, 240, 0.15);
-  border-radius: 10px;
-  background: #1e293b;
-  color: #a3a3a3;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 600;
   font-family: inherit;
+  font-style: italic;
+  letter-spacing: 0.01em;
   cursor: pointer;
   transition: background 0.15s ease-out, border-color 0.15s ease-out,
-    color 0.15s ease-out;
+    color 0.15s ease-out, box-shadow 0.15s ease-out, transform 0.08s ease-out;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
-  letter-spacing: 0.02em;
 }
 
-.chromatic-toggle:focus-visible {
+.any-note-btn:focus-visible {
   outline: none;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
 }
 
-.chromatic-toggle:hover {
-  background: #283548;
+.any-note-btn:hover {
+  color: #e2e8f0;
+  border-color: rgba(226, 232, 240, 0.4);
+  background: rgba(226, 232, 240, 0.04);
 }
 
-/* Chromatic active: orange accent (colorblind-safe pair with blue) */
-.chromatic-toggle.active {
-  background: #c2410c;
-  border-color: #ea580c;
+.any-note-btn:active {
+  transform: scale(0.97);
+}
+
+.any-note-btn.selected {
+  background: #0f766e;
+  border-style: solid;
+  border-color: #14b8a6;
   color: #fff;
+  font-style: normal;
+}
+
+@media (min-width: 768px) {
+  .any-note-btn {
+    min-height: 60px;
+    font-size: 0.9375rem;
+  }
 }
 
 /* --- Responsive: tighter on very narrow screens --- */
 @media (max-width: 374px) {
   .string-btn {
-    min-width: 40px;
-    min-height: 40px;
-    padding: 0.25rem 0.5rem;
-    font-size: 0.8125rem;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.375rem 0.5rem;
+    font-size: 0.875rem;
   }
 
   .picker-select {
@@ -379,8 +426,9 @@
   }
 
   .string-btn {
-    min-width: 52px;
-    padding: 0.5rem 0.75rem;
+    min-width: 60px;
+    min-height: 60px;
+    font-size: 1.0625rem;
   }
 }
 

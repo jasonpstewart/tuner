@@ -197,7 +197,6 @@ function createLabels(svg) {
 function createNeedle(svg) {
   const g = createSVGElement('g', {
     class: 'gauge-needle',
-    'transform-origin': `${CX} ${CY}`,
   });
 
   // Needle line
@@ -230,6 +229,13 @@ function createReadout(container) {
   readout.className = 'gauge-readout';
   readout.setAttribute('aria-live', 'polite');
 
+  // Target label: shown above the note name when a tuning target is active
+  // (user-selected string or detector auto-lock). Secondary readout so the
+  // user always knows what they're tuning *to* vs what the mic is hearing.
+  const target = document.createElement('span');
+  target.className = 'gauge-target';
+  target.textContent = '';
+
   const noteName = document.createElement('span');
   noteName.className = 'gauge-note-name';
   noteName.textContent = '--';
@@ -251,6 +257,7 @@ function createReadout(container) {
   arrowIndicator.setAttribute('aria-hidden', 'true');
   arrowIndicator.textContent = '';
 
+  readout.appendChild(target);
   readout.appendChild(noteName);
   readout.appendChild(octave);
   readout.appendChild(arrowIndicator);
@@ -259,7 +266,7 @@ function createReadout(container) {
 
   container.appendChild(readout);
 
-  return { noteName, octave, frequency, cents, arrowIndicator };
+  return { target, noteName, octave, frequency, cents, arrowIndicator };
 }
 
 /**
@@ -290,12 +297,22 @@ export function create(container) {
 
   /**
    * Update the gauge display.
-   * @param {{ cents: number, note: string, octave: number, frequency: number, inTune: boolean }} data
+   * @param {{ cents: number, note: string, octave: number, frequency: number, inTune: boolean, targetString?: string | null }} data
    */
-  function update({ cents = 0, note = '--', octave = '', frequency = 0, inTune = false }) {
-    // Update needle rotation
+  function update({ cents = 0, note = '--', octave = '', frequency = 0, inTune = false, targetString = null }) {
+    // Target readout: shows the tuning target (user-selected string or
+    // detector auto-lock). When absent, the gauge is in pure chromatic mode.
+    if (targetString) {
+      readout.target.textContent = `→ ${targetString}`;
+      readout.target.classList.add('visible');
+    } else {
+      readout.target.textContent = '';
+      readout.target.classList.remove('visible');
+    }
+
+    // Update needle rotation — use style.transform so CSS transition + transform-origin work
     const angle = centsToAngle(cents);
-    needleGroup.setAttribute('transform', `rotate(${angle} ${CX} ${CY})`);
+    needleGroup.style.transform = `rotate(${angle}deg)`;
 
     // Update needle color based on zone
     const needleLine = needleGroup.querySelector('line');

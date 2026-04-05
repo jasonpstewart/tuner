@@ -15,8 +15,9 @@
   display: block;
 }
 
-/* Smooth needle animation */
+/* Smooth needle animation — transform-origin in viewBox units (CX=200, CY=180 of 400x240) */
 .gauge-needle {
+  transform-origin: 200px 180px;
   transition: transform 0.15s ease-out;
 }
 
@@ -40,6 +41,25 @@
   margin-top: 0.25rem;
   text-align: center;
   width: 100%;
+}
+
+/* Target readout: displayed above the note name when the gauge has a
+   tuning target (user-selected string or detector auto-lock). Absent in
+   pure chromatic mode. Smaller than the note name — it's secondary info,
+   the primary readout is still "what the mic is hearing right now." */
+.gauge-target {
+  width: 100%;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0.02em;
+  min-height: 1.1em;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+.gauge-target.visible {
+  opacity: 1;
 }
 
 .gauge-note-name {
