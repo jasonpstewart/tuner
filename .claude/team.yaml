@@ -1,0 +1,40 @@
+team: tuner
+description: "Web-based instrument tuner — mic input, pitch detection, sharp/flat display, reference tone playback. Vite + vanilla JS, static hosting, mobile-friendly."
+
+defaults:
+  model: sonnet
+  budget: 0.50
+  permission-mode: dontAsk
+
+members:
+  - name: audio
+    role: "Web Audio API: mic capture, pitch detection, tone generation, AudioContext management"
+    tools: [Read, Write, Edit, Glob, Grep, Bash, Agent]
+    owns:
+      - "src/audio/**"
+
+  - name: frontend
+    role: "UI components, SVG gauge, layout, string selector, permission flow, accessibility"
+    tools: [Read, Write, Edit, Glob, Grep, Bash, Agent]
+    owns:
+      - "src/ui/**"
+      - "src/styles/**"
+      - "index.html"
+
+  - name: data
+    role: "Instrument tuning data model, music math utilities, note detection logic"
+    tools: [Read, Write, Edit, Glob, Grep, Bash, Agent]
+    owns:
+      - "src/data/**"
+      - "src/utils/**"
+
+  - name: infra
+    role: "Vite config, PWA/service worker, project scaffold, testing setup, deployment"
+    tools: [Read, Write, Edit, Glob, Grep, Bash, Agent]
+    owns:
+      - "vite.config.*"
+      - "package.json"
+      - "public/**"
+      - "src/sw.*"
+      - "vitest.config.*"
+      - "src/__tests__/**"
