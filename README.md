@@ -2,6 +2,8 @@
 
 A web-based instrument tuner that listens on your microphone and shows whether you're sharp or flat. Works on mobile and desktop.
 
+**Live**: https://jasonpstewart.github.io/tuner/
+
 ## Features
 
 - **Real-time pitch detection** using the McLeod Pitch Method (via [pitchy](https://github.com/ianprime0509/pitchy))
@@ -27,6 +29,16 @@ Open http://localhost:5173 in your browser. Click "Start Tuning" and grant micro
 The dev server also binds to `0.0.0.0` with a self-signed HTTPS certificate (via `@vitejs/plugin-basic-ssl`), so you can load the app on another device on your LAN using the "Network" URL Vite prints at startup. You'll need to accept the cert warning once per device; after that, microphone access works the same as on localhost.
 
 > Microphone access requires HTTPS or localhost.
+
+## Install on mobile (or desktop) as a PWA
+
+The live site is installable as a Progressive Web App, so it launches in its own window with an app icon and works whenever you have a connection.
+
+- **iOS Safari**: open the live site, tap Share → **Add to Home Screen**.
+- **Android Chrome**: open the live site; Chrome will prompt to install, or use the menu → **Install app**.
+- **Desktop Chrome / Edge**: look for the install icon in the address bar on the right, or menu → **Install Tuner**.
+
+Once installed, the app auto-updates whenever you open it with network connectivity — the service worker uses a network-first strategy for the app shell so new deploys show up on the next launch. If you're offline, the last cached version loads from disk.
 
 ## Scripts
 
