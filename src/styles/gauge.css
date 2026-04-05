@@ -15,7 +15,7 @@
   display: block;
 }
 
-/* Smooth needle animation — transform-origin in viewBox units (CX=200, CY=180 of 400x240) */
+/* Smooth needle animation — transform-origin in viewBox units (CX=200, CY=180; viewBox is 0 -20 400 260) */
 .gauge-needle {
   transform-origin: 200px 180px;
   transition: transform 0.15s ease-out;

@@ -279,7 +279,10 @@ export function create(container) {
   wrapper.className = 'gauge-wrapper';
 
   const svg = createSVGElement('svg', {
-    viewBox: '0 0 400 240',
+    // viewBox top is -20 (not 0) so the "0" tick label at y=CY-labelR=0
+    // isn't clipped by the top edge. 20 units of headroom comfortably
+    // clears the 11px centered glyph.
+    viewBox: '0 -20 400 260',
     class: 'gauge-svg',
     role: 'img',
     'aria-label': 'Tuning gauge showing cents deviation from target note',
