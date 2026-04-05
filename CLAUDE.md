@@ -44,6 +44,7 @@ All audio modules import from `src/audio/audio-context.js` which manages a singl
 - A single `DynamicsCompressorNode` on the tone-generator output is module-scoped and persistent; per-play `osc -> gain` subgraphs connect into it rather than to `ctx.destination` directly.
 - SVG `transform-origin` must be set explicitly for CSS transitions on the gauge needle.
 - Use `createElementNS` with SVG namespace for dynamically created SVG elements.
+- String-selector uses two orthogonal indices — `selectedStringIndex` (sticky, user tap, drives gauge target + cents calculation) and `detectedStringIndex` (transient, pitch detector, drives visual hint ring only). **Detection NEVER sets selection and NEVER triggers tones** — this preserves the manual-pin escape hatch when auto-lock is doing the wrong thing. See `src/ui/string-selector.js` and `src/main.js` detection callback.
 
 ## Style
 
