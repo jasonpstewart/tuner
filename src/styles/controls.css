@@ -198,3 +198,154 @@
     padding: 0.5rem 0.75rem;
   }
 }
+
+/* === Permission Flow: Start/Stop & status messages === */
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+/* --- Start Tuning button --- */
+.pf-start-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 180px;
+  min-height: 52px;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 12px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background 0.15s ease-out, transform 0.1s ease-out,
+    box-shadow 0.15s ease-out;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  box-shadow: 0 2px 12px rgba(37, 99, 235, 0.35);
+}
+
+.pf-start-btn:hover {
+  background: #1d4ed8;
+  box-shadow: 0 4px 18px rgba(37, 99, 235, 0.45);
+}
+
+.pf-start-btn:active {
+  background: #1e40af;
+  transform: scale(0.97);
+}
+
+.pf-start-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+/* --- Stop button --- */
+.pf-stop-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+  min-height: 44px;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease-out, transform 0.1s ease-out,
+    box-shadow 0.15s ease-out;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+}
+
+.pf-stop-btn:hover {
+  background: #b91c1c;
+}
+
+.pf-stop-btn:active {
+  background: #991b1b;
+  transform: scale(0.97);
+}
+
+.pf-stop-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.5);
+}
+
+/* --- Status messages --- */
+.pf-status {
+  margin: 0;
+  text-align: center;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: #e2e8f0;
+}
+
+.pf-status--requesting {
+  color: #94a3b8;
+  animation: pf-pulse 1.2s ease-in-out infinite;
+}
+
+.pf-status--error {
+  color: #fca5a5;
+}
+
+.pf-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 320px;
+  text-align: center;
+}
+
+/* --- Retry button --- */
+.pf-retry-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
+  min-height: 44px;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid rgba(226, 232, 240, 0.2);
+  border-radius: 8px;
+  background: #1e293b;
+  color: #e2e8f0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease-out, border-color 0.15s ease-out;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.pf-retry-btn:hover {
+  background: #283548;
+  border-color: rgba(226, 232, 240, 0.3);
+}
+
+.pf-retry-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* --- Requesting pulse animation --- */
+@keyframes pf-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}

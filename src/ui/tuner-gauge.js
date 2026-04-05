@@ -334,6 +334,13 @@ export function create(container) {
       readout.arrowIndicator.style.color = COLOR_IN_TUNE;
     }
 
+    // Update SVG aria-label dynamically
+    const direction = isFlat ? 'flat' : isSharp ? 'sharp' : 'in tune';
+    svg.setAttribute(
+      'aria-label',
+      `Tuning gauge showing ${note} ${sign}${cents.toFixed(1)} cents ${direction}`
+    );
+
     // In-tune glow effect
     if (inTune) {
       wrapper.classList.add('gauge-in-tune');
