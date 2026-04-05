@@ -187,6 +187,191 @@
   }
 }
 
+/* === Settings toggle + panel === */
+
+.settings-toggle {
+  position: absolute;
+  right: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid rgba(226, 232, 240, 0.15);
+  border-radius: 8px;
+  background: transparent;
+  color: #a3a3a3;
+  cursor: pointer;
+  transition: color 0.15s ease-out, background 0.15s ease-out,
+    border-color 0.15s ease-out;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.settings-toggle:hover {
+  color: #e2e8f0;
+  background: rgba(226, 232, 240, 0.08);
+}
+
+.settings-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.settings-toggle.active {
+  color: #e2e8f0;
+  border-color: rgba(226, 232, 240, 0.3);
+}
+
+.settings-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Panel needs header to be position: relative */
+.app-header {
+  position: relative;
+}
+
+.settings-panel {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.1);
+  background: #0f172a;
+  animation: settings-slide-down 0.15s ease-out;
+}
+
+.settings-panel[hidden] {
+  display: none;
+}
+
+@keyframes settings-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.settings-a4-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.settings-a4-input {
+  width: 3.5rem;
+  padding: 0.25rem 0.375rem;
+  border: 1px solid rgba(226, 232, 240, 0.15);
+  border-radius: 6px;
+  background: #1e293b;
+  color: #e2e8f0;
+  font-size: 0.875rem;
+  font-family: inherit;
+  font-weight: 600;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+
+.settings-a4-input::-webkit-inner-spin-button,
+.settings-a4-input::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+.settings-a4-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+}
+
+.settings-hz {
+  font-size: 0.8125rem;
+  color: #a3a3a3;
+}
+
+.settings-a4-slider {
+  width: 100%;
+  max-width: 240px;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #334155;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.settings-a4-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 2px solid #1e293b;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease-out;
+}
+
+.settings-a4-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 2px solid #1e293b;
+  cursor: pointer;
+}
+
+.settings-a4-slider:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+}
+
+.settings-presets {
+  display: flex;
+  gap: 0.375rem;
+}
+
+.settings-preset-btn {
+  padding: 0.25rem 0.625rem;
+  min-height: 30px;
+  border: 1px solid rgba(226, 232, 240, 0.15);
+  border-radius: 6px;
+  background: #1e293b;
+  color: #a3a3a3;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease-out, border-color 0.15s ease-out,
+    color 0.15s ease-out;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.settings-preset-btn:hover {
+  background: #283548;
+  color: #e2e8f0;
+}
+
+.settings-preset-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.settings-preset-btn.active {
+  background: #1d4ed8;
+  border-color: #3b82f6;
+  color: #fff;
+}
+
 /* Wide screens: single row, more spacing */
 @media (min-width: 768px) {
   .string-buttons {
