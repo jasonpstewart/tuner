@@ -2,7 +2,7 @@
 name: Browser Verification Required
 description: UI and audio features must be verified in the browser, not just via build checks
 strength: should
-freshness: 2026-04-04
+freshness: 2026-04-05
 paths: ["src/ui/**", "src/audio/**", "src/styles/**"]
 promoted-from: frontend/learnings, team/decisions
 ---

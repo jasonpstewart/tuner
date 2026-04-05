@@ -2,7 +2,7 @@
 name: Integration Wiring Task Required
 description: Every sprint that builds multiple modules must include a final task to wire them together in the app entry point
 strength: must
-freshness: 2026-04-04
+freshness: 2026-04-05
 paths: ["src/main.js"]
 promoted-from: audio/learnings, frontend/learnings, team/decisions
 ---
