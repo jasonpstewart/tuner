@@ -102,7 +102,7 @@ body {
   flex-direction: column;
   gap: 0.75rem;
   padding: 1rem;
-  padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
   min-height: 120px;
   border-top: 1px solid rgba(226, 232, 240, 0.1);
   background: #0f172a;
