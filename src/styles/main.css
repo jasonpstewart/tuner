@@ -48,7 +48,8 @@ body {
   flex-direction: column;
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding-bottom: env(safe-area-inset-bottom);
 }
 
