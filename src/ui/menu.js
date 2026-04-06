@@ -289,6 +289,25 @@ export function createMenu(container) {
 
   dropdown.appendChild(aboutSection);
 
+  // ── Build version ───────────────────────────────────────────────
+
+  if (typeof __BUILD_TIMESTAMP__ !== 'undefined') {
+    const versionDivider = document.createElement('div');
+    versionDivider.className = 'menu-divider';
+    dropdown.appendChild(versionDivider);
+
+    const versionSection = document.createElement('div');
+    versionSection.className = 'menu-section';
+
+    const versionLabel = document.createElement('div');
+    versionLabel.className = 'menu-build-version';
+    const buildDate = new Date(__BUILD_TIMESTAMP__);
+    versionLabel.textContent = `Build: ${buildDate.toLocaleString()}`;
+    versionSection.appendChild(versionLabel);
+
+    dropdown.appendChild(versionSection);
+  }
+
   // ── Open / close logic ───────────────────────────────────────────
 
   let isOpen = false;
