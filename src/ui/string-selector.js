@@ -1,6 +1,6 @@
 import { instruments } from '../data/instruments.js';
 import { midiToFrequency } from '../utils/music.js';
-import { getReferencePitch } from './settings.js';
+import { getReferencePitch } from './menu.js';
 import '../styles/controls.css';
 
 /** @typedef {import('../data/instruments.js').instruments} InstrumentsData */

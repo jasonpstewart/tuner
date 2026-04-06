@@ -3,7 +3,7 @@ import './styles/controls.css'
 import './styles/gauge.css'
 import { createStringSelector, getSelectedTuning, getSelectedStringIndex, setDetectedString } from './ui/string-selector.js'
 import { createPermissionFlow, onStart, onStop } from './ui/permission-flow.js'
-import { createSettings, getReferencePitch } from './ui/settings.js'
+import { createMenu, getReferencePitch } from './ui/menu.js'
 import { playTone, stopTone } from './audio/tone-generator.js'
 import { startPitchDetection, stopPitchDetection } from './audio/pitch-detector.js'
 import { detectNote } from './audio/note-detector.js'
@@ -19,7 +19,7 @@ const IN_TUNE_DOT_THRESHOLD_CENTS = 10
 
 const headerEl = document.querySelector('.app-header')
 if (headerEl) {
-  createSettings(headerEl)
+  createMenu(headerEl)
 }
 
 const stringSelectorEl = document.querySelector('.string-selector')

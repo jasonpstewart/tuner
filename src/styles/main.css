@@ -54,20 +54,32 @@ body {
 }
 
 /* --- Header --- */
+/* Default (desktop/android): left-aligned title, Material app-bar feel */
 .app-header {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 0.75rem 1rem;
+  padding-left: 1rem;
   border-bottom: 1px solid rgba(226, 232, 240, 0.1);
 }
 
 .app-header h1 {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #e2e8f0;
+}
+
+/* iOS: centered title, HIG nav-bar feel */
+[data-platform="ios"] .app-header {
+  justify-content: center;
+}
+
+[data-platform="ios"] .app-header h1 {
+  font-size: 1.0625rem;
   font-weight: 600;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #e2e8f0;
 }
 
 /* --- Main content --- */
