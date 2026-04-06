@@ -257,6 +257,26 @@ export function createMenu(container) {
     dropdown.appendChild(fsSection);
   }
 
+  // ── About link ──────────────────────────────────────────────────
+
+  const aboutDivider = document.createElement('div');
+  aboutDivider.className = 'menu-divider';
+  dropdown.appendChild(aboutDivider);
+
+  const aboutSection = document.createElement('div');
+  aboutSection.className = 'menu-section';
+
+  const aboutLink = document.createElement('a');
+  aboutLink.className = 'menu-item';
+  aboutLink.href = 'https://github.com/jasonpstewart/tuner';
+  aboutLink.target = '_blank';
+  aboutLink.rel = 'noopener';
+  aboutLink.setAttribute('role', 'menuitem');
+  aboutLink.textContent = 'About';
+  aboutSection.appendChild(aboutLink);
+
+  dropdown.appendChild(aboutSection);
+
   // ── Open / close logic ───────────────────────────────────────────
 
   let isOpen = false;
