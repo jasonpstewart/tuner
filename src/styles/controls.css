@@ -452,6 +452,45 @@
   color: #fff;
 }
 
+/* --- Menu divider --- */
+.menu-divider {
+  height: 1px;
+  background: rgba(226, 232, 240, 0.1);
+  margin: 0.25rem 0;
+}
+
+/* --- Menu item (clickable row) --- */
+.menu-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 0.625rem 1rem;
+  border: none;
+  background: transparent;
+  color: #e2e8f0;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease-out;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.menu-item:hover {
+  background: rgba(226, 232, 240, 0.08);
+}
+
+.menu-item:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.menu-item:active {
+  background: rgba(226, 232, 240, 0.12);
+}
+
 /* Wide screens: single row, more spacing */
 @media (min-width: 768px) {
   .string-buttons {

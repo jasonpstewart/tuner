@@ -210,6 +210,53 @@ export function createMenu(container) {
   pitchSection.appendChild(pitchControls);
   dropdown.appendChild(pitchSection);
 
+  // ── Fullscreen toggle (only when API is available) ──────────────
+
+  if (document.fullscreenEnabled || document.webkitFullscreenEnabled) {
+    const fsDivider = document.createElement('div');
+    fsDivider.className = 'menu-divider';
+    dropdown.appendChild(fsDivider);
+
+    const fsSection = document.createElement('div');
+    fsSection.className = 'menu-section';
+
+    const fsBtn = document.createElement('button');
+    fsBtn.className = 'menu-item';
+    fsBtn.setAttribute('role', 'menuitem');
+    fsBtn.textContent = 'Enter Fullscreen';
+
+    function isFullscreen() {
+      return !!(document.fullscreenElement || document.webkitFullscreenElement);
+    }
+
+    function updateFsLabel() {
+      fsBtn.textContent = isFullscreen() ? 'Exit Fullscreen' : 'Enter Fullscreen';
+    }
+
+    fsBtn.addEventListener('click', () => {
+      if (isFullscreen()) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
+      } else {
+        const el = document.documentElement;
+        if (el.requestFullscreen) {
+          el.requestFullscreen();
+        } else if (el.webkitRequestFullscreen) {
+          el.webkitRequestFullscreen();
+        }
+      }
+    });
+
+    document.addEventListener('fullscreenchange', updateFsLabel);
+    document.addEventListener('webkitfullscreenchange', updateFsLabel);
+
+    fsSection.appendChild(fsBtn);
+    dropdown.appendChild(fsSection);
+  }
+
   // ── Open / close logic ───────────────────────────────────────────
 
   let isOpen = false;
