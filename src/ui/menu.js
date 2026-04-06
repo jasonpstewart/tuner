@@ -89,6 +89,13 @@ const ELLIPSIS_SVG = `<svg width="20" height="20" viewBox="0 0 20 20" fill="curr
   <circle cx="16" cy="10" r="2"/>
 </svg>`;
 
+/** Hamburger icon: three horizontal lines (desktop) */
+const HAMBURGER_SVG = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+  <line x1="3" y1="5" x2="17" y2="5"/>
+  <line x1="3" y1="10" x2="17" y2="10"/>
+  <line x1="3" y1="15" x2="17" y2="15"/>
+</svg>`;
+
 // ── Menu creation ─────────────────────────────────────────────────────
 
 /**
@@ -97,7 +104,12 @@ const ELLIPSIS_SVG = `<svg width="20" height="20" viewBox="0 0 20 20" fill="curr
  */
 export function createMenu(container) {
   const platform = document.documentElement.dataset.platform;
-  const isIOS = platform === 'ios';
+
+  // Platform-adaptive icon: kebab (right) on Android, ellipsis (right) on iOS,
+  // hamburger (left) on desktop to avoid visual collision with Chrome's own ⋮
+  const icon = platform === 'ios' ? ELLIPSIS_SVG
+    : platform === 'desktop' ? HAMBURGER_SVG
+    : KEBAB_SVG;
 
   // Toggle button
   const toggle = document.createElement('button');
@@ -106,7 +118,7 @@ export function createMenu(container) {
   toggle.setAttribute('aria-expanded', 'false');
   toggle.setAttribute('aria-haspopup', 'true');
   toggle.title = 'Open menu';
-  toggle.innerHTML = isIOS ? ELLIPSIS_SVG : KEBAB_SVG;
+  toggle.innerHTML = icon;
 
   // Dropdown
   const dropdown = document.createElement('div');

@@ -82,6 +82,11 @@ body {
   letter-spacing: 0.04em;
 }
 
+/* Desktop: hamburger is left-positioned, so push title right to clear it */
+[data-platform="desktop"] .app-header {
+  justify-content: center;
+}
+
 /* --- Main content --- */
 .tuner-main {
   flex: 1 1 auto;
