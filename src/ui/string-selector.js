@@ -80,6 +80,7 @@ function renderTuningOptions() {
     tuningSelect.appendChild(opt);
   });
   tuningSelect.value = currentTuningIndex;
+  tuningSelect.disabled = tunings.length <= 1;
 }
 
 function renderStringButtons() {
