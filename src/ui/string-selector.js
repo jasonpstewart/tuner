@@ -268,6 +268,9 @@ export function createStringSelector(container, _instrumentsData) {
     currentTuningIndex = 0;
     selectedStringIndex = -1;
     detectedStringIndex = -1;
+    if (playingStringIndex !== -1) {
+      document.dispatchEvent(new CustomEvent('stop-tone'));
+    }
     renderTuningOptions();
     renderStringButtons();
     notifyInstrumentChange();
@@ -278,6 +281,9 @@ export function createStringSelector(container, _instrumentsData) {
     currentTuningIndex = parseInt(tuningSelect.value, 10);
     selectedStringIndex = -1;
     detectedStringIndex = -1;
+    if (playingStringIndex !== -1) {
+      document.dispatchEvent(new CustomEvent('stop-tone'));
+    }
     renderStringButtons();
     notifyInstrumentChange();
   });
@@ -303,7 +309,7 @@ export function createStringSelector(container, _instrumentsData) {
     if (playingStringIndex >= 0 && strings[playingStringIndex]) {
       const s = strings[playingStringIndex];
       document.dispatchEvent(
-        new CustomEvent('play-tone', {
+        new CustomEvent('update-tone', {
           detail: { frequency: stringFrequency(s), name: s.name },
         })
       );
@@ -326,7 +332,7 @@ function setPlayingFrequency(frequency) {
   } else {
     const strings = currentTuning().strings;
     playingStringIndex = strings.findIndex(
-      (s) => Math.abs(s.frequency - frequency) < 0.01
+      (s) => Math.abs(stringFrequency(s) - frequency) < 0.01
     );
   }
   applyButtonStates();

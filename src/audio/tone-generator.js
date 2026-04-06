@@ -202,6 +202,26 @@ export function stopTone() {
 }
 
 /**
+ * Smoothly updates the frequency of the currently playing tone.
+ * No-op if no tone is playing.
+ *
+ * @param {number} frequency - New frequency in Hz
+ */
+export function updateToneFrequency(frequency) {
+  if (!currentOscillator || !playing) return;
+
+  const ctx = getAudioContext();
+  const now = ctx.currentTime;
+
+  // Swap PeriodicWave if the frequency crossed the low/high threshold
+  currentOscillator.setPeriodicWave(getHarmonicWave(ctx, frequency));
+
+  // Smooth ~30ms ramp to avoid clicks
+  currentOscillator.frequency.setValueAtTime(currentOscillator.frequency.value, now);
+  currentOscillator.frequency.linearRampToValueAtTime(frequency, now + 0.03);
+}
+
+/**
  * Returns true if a tone is currently playing.
  * @returns {boolean}
  */
