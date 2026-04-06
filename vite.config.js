@@ -18,7 +18,11 @@ export default defineConfig({
         const path = await import('node:path')
         const fs = await import('node:fs')
         const swPath = path.default.join(options.dir, 'sw.js')
-        const content = fs.default.readFileSync(swPath, 'utf-8')
+        let content = fs.default.readFileSync(swPath, 'utf-8')
+        content = content.replace(
+          /const CACHE_NAME = '[^']+'/,
+          `const CACHE_NAME = 'tuner-${buildTimestamp}'`
+        )
         fs.default.writeFileSync(swPath, `// build: ${buildTimestamp}\n${content}`)
       },
     },
